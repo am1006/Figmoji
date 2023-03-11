@@ -21,3 +21,9 @@ This repo is using:
 - React + Webpack
 - TypeScript
 - Prettier precommit hook
+
+---
+
+Reference:
+
+1. [Figma Plugin Design System (React)](https://github.com/thomas-lowry/figma-plugin-ds)
