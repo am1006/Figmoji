@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from '../assets/logo.svg';
 import '../styles/ui.css';
+import 'react-figma-plugin-ds/figma-plugin-ds.css';
+import { Button, Textarea } from 'react-figma-plugin-ds';
 
 function App() {
   const textbox = React.useRef<HTMLInputElement>(undefined);
@@ -32,14 +34,13 @@ function App() {
   return (
     <div>
       <img src={logo} />
-      <h2>Rectangle Creator</h2>
+      <h2 className="text-blue-600">Rectangle Creator</h2>
       <p>
         Count: <input ref={countRef} />
+        <Textarea className="" defaultValue="" onChange={function _() {}} placeholder="Hello" rows={0} />
       </p>
-      <button id="create" onClick={onCreate}>
-        Create
-      </button>
-      <button onClick={onCancel}>Cancel</button>
+      <Button onClick={onCreate}>Create</Button>
+      <Button onClick={onCancel}>Cancel</Button>
     </div>
   );
 }
