@@ -1,6 +1,11 @@
-figma.showUI(__html__);
+// The iframe can access the browser APIs but not the Figma "scene."
 
-figma.ui.onmessage = (msg) => {
+import editBasicInfo from './editBasicInfo';
+
+figma.showUI(__html__);
+figma.ui.resize(360, 640);
+
+figma.ui.onmessage = async (msg) => {
   if (msg.type === 'create-rectangles') {
     const nodes = [];
 
@@ -22,5 +27,22 @@ figma.ui.onmessage = (msg) => {
     });
   }
 
+  if (msg.type == 'edit-basic-info') {
+    await editBasicInfo(msg.input);
+  }
+
   figma.closePlugin();
 };
+
+// Page 1:
+//  1. Replace some parts with today's emoji
+//  2. Replace date, day, emoji No. (fetched from full list)
+//
+
+// Page 2:
+// 1. Replace some parts with today's emoji
+// 2. Replace emoji No. (fetched from full list) and unicode
+// 3. Set up placeholder for manual input: use urls from pedia and full list to enable fast operation
+
+// Page 3:
+// Fetch each platform's design from emojipedias
