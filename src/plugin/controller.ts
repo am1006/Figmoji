@@ -1,6 +1,7 @@
 // The iframe can access the browser APIs but not the Figma "scene."
 
 import editBasicInfo from './editBasicInfo';
+import fillImages from './fillImages';
 
 figma.showUI(__html__);
 figma.ui.resize(360, 640);
@@ -29,6 +30,10 @@ figma.ui.onmessage = async (msg) => {
 
   if (msg.type == 'edit-basic-info') {
     await editBasicInfo(msg.input);
+  }
+
+  if ((msg.type = 'fill-images')) {
+    await fillImages(msg.input);
   }
 
   figma.closePlugin();

@@ -15,7 +15,7 @@
     "react-figma-plugin-ds": "^2.3.0"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.50.0",
+    "@figma/plugin-typings": "^1.60.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
