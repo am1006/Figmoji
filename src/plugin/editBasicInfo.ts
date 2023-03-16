@@ -2,6 +2,8 @@ export interface EditBasicInfoType {
   emoji: string;
   no: string;
   unicode: string;
+  dayCh: string;
+  dateCh: string;
 }
 
 export default async function editBasicInfo(input: EditBasicInfoType) {
@@ -15,6 +17,8 @@ export default async function editBasicInfo(input: EditBasicInfoType) {
   const emojiNodes: TextNode[] = getAllOccurrences('#Emoji');
   const numberNodes: TextNode[] = getAllOccurrences('#Number');
   const unicodeNodes: TextNode[] = getAllOccurrences('#Unicode');
+  const dayNodes: TextNode[] = getAllOccurrences('#Day');
+  const dateNodes: TextNode[] = getAllOccurrences('#Date');
 
   // Replace text with today's emoji
   emojiNodes.forEach((node) => {
@@ -27,6 +31,14 @@ export default async function editBasicInfo(input: EditBasicInfoType) {
 
   unicodeNodes.forEach((node) => {
     node.characters = input.unicode;
+  });
+
+  dayNodes.forEach((node) => {
+    node.characters = input.dayCh;
+  });
+
+  dateNodes.forEach((node) => {
+    node.characters = input.dateCh;
   });
 
   // This is how figma responds back to the ui

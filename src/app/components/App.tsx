@@ -5,10 +5,10 @@ import { Button, Input, Title } from 'react-figma-plugin-ds';
 import '../styles/ui.css';
 import 'react-figma-plugin-ds/figma-plugin-ds.css';
 
-import EmojiBasicInfo from './EmojiBasicInfo';
 import EmojiDescription from './EmojiDescription';
 import EmojiVendorImages from './EmojiVendorImages';
-import TimeInfo from './TimeInfo';
+
+import BasicInfo from './BasicInfo';
 
 export interface EmojiData {
   no: number;
@@ -22,6 +22,9 @@ export interface EmojiData {
 
 function App() {
   const [number, setNumber] = React.useState('998');
+  const [url, setUrl] = React.useState('http://127.0.0.1:5000');
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const [emoji, setEmoji] = React.useState<EmojiData>({
     no: 998,
     unicode: 'U+1F319',
@@ -36,8 +39,10 @@ function App() {
   });
 
   const onGetInfo = async () => {
-    const response = await fetch(`http://127.0.0.1:5000/emoji/${number}`);
+    setIsLoading(true);
+    const response = await fetch(`${url}/emoji/${number}`);
     const text = await response.text();
+    setIsLoading(false);
 
     // to json
     const data: EmojiData = JSON.parse(text);
@@ -56,32 +61,76 @@ function App() {
 
   return (
     <div className="p-4 flex flex-col gap-2 bg-slate-50">
-      <h2 className="font-bold text-xl">Project Emoji Panel</h2>
-
-      {/* Get Info */}
-      <div className="flex flex-row gap-4 bg-white rounded shadow p-2">
-        <Title className="!w-full" level="h2" size="large" weight="medium">
-          № {number.toString().padStart(4, '0')}
-        </Title>
-        <Input
-          className=""
-          defaultValue={number}
-          icon="search"
-          onChange={(e) => {
-            setNumber(e.toString());
-          }}
-          placeholder={number}
-        />
-        <Button onClick={onGetInfo}>Get Info</Button>
+      <div className="flex flex-row justify-between items-center">
+        <h2 className="font-bold text-xl">Project Emoji Panel</h2>
+        <p className="text-sm rounded p-2 border-dotted border text-gray-700 font-medium">
+          Connected to: <span className="font-bold font-mono text-red-400">{url}</span>
+        </p>
       </div>
 
-      <EmojiBasicInfo emoji={emoji} />
+      <div className="flex flex-row gap-2">
+        {/* LEFT */}
+        <div className="flex flex-col gap-2">
+          {/* Set URL */}
+          <div className="flex flex-row gap-4 bg-white rounded shadow p-2 items-center justify-between">
+            <div className="flex items-center">
+              <Input
+                className=""
+                defaultValue={url}
+                icon="link-connected"
+                onChange={(e) => {
+                  setUrl(e.toString());
+                }}
+                placeholder="Type the self-hosted server URL"
+              />
+              <p className="text-xs font-light">/emoji/{number}</p>
+            </div>
+          </div>
 
-      <TimeInfo />
+          {/* Get Info */}
+          <div className="flex flex-row gap-4 bg-white rounded shadow p-2">
+            <Title className="!w-full" level="h2" size="large" weight="medium">
+              № {number.toString().padStart(4, '0')}
+            </Title>
 
-      <EmojiVendorImages emoji={emoji} />
+            <Input
+              className=""
+              defaultValue={number}
+              icon="search"
+              onChange={(e) => {
+                setNumber(e.toString());
+              }}
+              placeholder="Emoji No."
+            />
 
-      <EmojiDescription emoji={emoji} />
+            <Button isDisabled={isLoading} onClick={onGetInfo}>
+              {isLoading && (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              )}
+              Get Emoji Data
+            </Button>
+          </div>
+
+          <BasicInfo emoji={emoji} />
+
+          <EmojiVendorImages emoji={emoji} />
+        </div>
+
+        {/* RIGHT */}
+        <EmojiDescription emoji={emoji} />
+      </div>
     </div>
   );
 }

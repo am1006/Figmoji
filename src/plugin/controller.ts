@@ -4,9 +4,17 @@ import editBasicInfo from './editBasicInfo';
 import fillImages from './fillImages';
 
 figma.showUI(__html__);
-figma.ui.resize(360, 640);
+figma.ui.resize(960, 480);
 
 figma.ui.onmessage = async (msg) => {
+  if (msg.type == 'edit-basic-info') {
+    await editBasicInfo(msg.input);
+  }
+
+  if ((msg.type = 'fill-images')) {
+    await fillImages(msg.input);
+  }
+
   if (msg.type === 'create-rectangles') {
     const nodes = [];
 
@@ -28,15 +36,9 @@ figma.ui.onmessage = async (msg) => {
     });
   }
 
-  if (msg.type == 'edit-basic-info') {
-    await editBasicInfo(msg.input);
+  if (msg.type === 'close') {
+    figma.closePlugin(`🎉 Success! Now go make something great! 🚀`);
   }
-
-  if ((msg.type = 'fill-images')) {
-    await fillImages(msg.input);
-  }
-
-  figma.closePlugin();
 };
 
 // Page 1:
